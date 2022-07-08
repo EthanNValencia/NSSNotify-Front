@@ -1,0 +1,13 @@
+<app-tasks 
+    [tasks]="tasks" 
+    class="tasks"
+    (onDeleteTask)="deleteTask($event)"
+    (onToggleTask)="toggleTask($event)"
+></app-tasks>
+
+
+<!---
+(onDeleteTask)="deleteTask(task)"
+    (onToggleSet)="toggle(task)"
+
+-->

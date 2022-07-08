@@ -1,0 +1,52 @@
+
+<form class="add-form" (ngSubmit)="onSubmit()">
+    <h1 class="title">Create Manager</h1>
+    <div class="flex-box">
+        <div class="form-control flex-child">
+            <label for="text">Manager First Name:</label>
+            <input type="text" name="firstName" id="firstName" [(ngModel)]="managerFirstName" placeholder="Manager First Name"/>
+        </div>
+        <div class="form-control flex-child">
+            <label for="text">Manager Last Name:</label>
+            <input type="text" name="managerLastName" id="managerLastName" [(ngModel)]="managerLastName" placeholder="Manager Last Name"/>
+        </div>
+    </div>
+    <div class="flex-box">
+        <div class="form-control flex-child">
+            <label for="text">Manager Email:</label>
+            <input type="text" name="managerEmail" id="managerEmail" [(ngModel)]="managerEmail" placeholder="Manager Email"/>
+        </div>
+        <div class="form-control flex-child">
+            <label for="text">Manager Phone Number:</label>
+            <input type="text" name="managerPhoneNumber" id="managerPhoneNumber" [(ngModel)]="managerPhoneNumber" placeholder="Manager Phone Number"/>
+        </div>
+    </div>
+    <div class="flex-box"> 
+        <div class="form-control flex-child">
+            <label for="text">Manager Password:</label>
+            <input type="text" name="passwordOne" id="passwordOne" [(ngModel)]="passwordOne" placeholder="Enter Password"/>
+        </div>
+        <div class="form-control flex-child">
+            <label for="text">Retype Manager Password:</label>
+            <input type="text" name="passwordTwo" id="passwordTwo" [(ngModel)]="passwordTwo" placeholder="Retype Password"/>
+        </div>
+    </div>
+    <div class="form-control form-control-check">
+        <label for="selectedFrequency">Max Number of Recipients:</label>
+        <select id="selectedFrequency" name="selectedFrequency" [(ngModel)]="numberOfEmployees">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </div>
+    <div class="more-padding">
+        <input type="submit" style="background-color:maroon" value="Create Manager" class="btn btn-block"/>
+    </div> 
+</form>

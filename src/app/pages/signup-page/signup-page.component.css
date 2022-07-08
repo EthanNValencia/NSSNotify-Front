@@ -1,0 +1,45 @@
+.signup {
+  max-width: 350px;
+  margin: 30px auto;
+  overflow: auto;
+  min-width: 350px;
+  border: 1px solid darkgray;
+  background: rgb(28, 26, 26);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.footer {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.payment-area {
+  margin: 50px;
+  text-align: center;
+}
+
+.add-margin {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.text-box {
+  width: 100%;
+}
+
+.flex-box {
+  display: flex;
+}
+
+.flex-child {
+  flex: 0.75;
+}  
+
+.flex-child:first-child {
+  margin-right: 20px;
+}
+
+.title {
+  font-size: medium;
+}

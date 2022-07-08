@@ -1,0 +1,47 @@
+<div *ngIf="task.taskName !== ''"
+    [ngClass]="{selected: task.taskSelected}" 
+    class="task" 
+    (dblclick)="onToggle(task)">
+
+    <ng-container *ngIf="!slimUI">
+        <h3 class="not-selectable">Name: {{task.taskName}}
+            <fa-icon 
+            (click)="deleteTask(task)"
+            [ngStyle]="{'color': 'red'}" 
+            [icon]="faTimes">
+        </fa-icon></h3>
+    </ng-container>
+    <ng-container *ngIf="slimUI">
+        <h4 class="not-selectable">{{task.taskName}} {{task.taskNotifyTime}} {{task.taskDate.date}}
+            <fa-icon 
+            (click)="deleteTask(task)"
+            [ngStyle]="{'color': 'red'}" 
+            [icon]="faTimes">
+        </fa-icon></h4>
+    </ng-container>
+
+    <ng-container *ngIf="!slimUI || this.task.taskSelected">
+    <ng-container *ngIf="task.taskNotifyTime !== ''">
+        <p class="not-selectable"><b class="title">Notification Time: </b>{{task.taskNotifyTime}}</p>
+    </ng-container>
+    <ng-container *ngIf="task.taskDate.date !== ''">
+        <p class="not-selectable"><b class="title">Notification Date: </b>{{task.taskDate.date}}</p>
+    </ng-container>
+        <ng-container *ngIf="task.taskMessage !== ''">
+            <p class="not-selectable"><b class="title">Message: </b>{{task.taskMessage}}</p>
+        </ng-container>
+        <ng-container *ngIf="this.task.taskSelected">
+            <app-button
+                text="{{ getBtnText() }}"
+                (btnClick)="toggleEditButton()"
+                color="{{ showEditTask ? 'maroon' : 'green' }}"
+                routerLink="{{ getRouterLink() }}"
+            ></app-button>
+        </ng-container>
+    </ng-container>
+
+</div>
+
+<!-- 
+    <ng-container *ngIf="task.taskStreet !== null || task.taskCity !== null || task.taskState !== null || task.taskZipCode !== null || task.taskStreet !== '' || task.taskCity !== '' || task.taskState !== '' || task.taskZipCode !== ''">
+-->

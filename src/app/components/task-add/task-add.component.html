@@ -1,0 +1,93 @@
+<form *ngIf="showAddTask" class="add-form">  <!-- (ngSubmit)="onSubmit()" -->
+    <h1>Add Task</h1>
+    <div class="form-control">
+        <label for="text">Name: </label>
+        <input type="text" name="taskName" id="taskName" [(ngModel)]="taskName" placeholder="Add Task Name">
+    </div>
+    <!--
+    <div class="form-control form-control-check">
+        <label for="selectedFrequency">Select Notify Frequency:</label>
+        <select id="selectedFrequency" name="selectedFrequency" [(ngModel)]="selectedFrequency">
+            <option *ngFor="let frequency of frequencies" value={{frequency.id}}>{{frequency.frequency}}</option>
+        </select>
+    </div>
+    -->
+    <div class="form-control form-control-check">
+        <label for="selectedEmployee">Select Employee:</label>
+        <select id="selectedEmployee" name="selectedEmployee" [(ngModel)]="selectedEmployeeId">
+            <option *ngFor="let employee of manager.employees" value={{employee.id}}>{{employee.employeeFirstName}} {{employee.employeeLastName}}</option>
+        </select>
+    </div>
+    <div class="form-control">
+        <label for="text">Task Description:</label>
+        <input type="text" name="taskDescription" id="taskDescription" [(ngModel)]="taskDescription" placeholder="Add Task Description"/>
+    </div>
+
+    <!-- Notification Time and Notification Date -->
+    <div class="flex-box">
+        <div class="form-control form-time flex-child">
+            <label for="text">Notification Time:</label>
+            <input type="time" name="taskNotifyTime" id="taskNotifyTime" min="08:00:00" [(ngModel)]="taskNotifyTime" placeholder="Add Task Notify Time"/>
+        </div>
+        <div class="form-control form-date flex-child">
+            <label for="text">Notification Date:</label>
+            <input type="date" name="taskDate" min="{{ getMinDate() }}" max="{{ getMaxDate() }}" id="taskDate" [(ngModel)]="taskDate" placeholder="Add Task Date"/>
+        </div>
+    </div>
+
+    <!-- Check boxes for whether there is an address and/or a scheduled time -->
+    <div class="flex-box">
+        <div class="form-control form-control-check flex-child">
+            <label for="text">Has Address</label>
+            <input type="checkbox" name="hasAddress" id="hasAddress" [(ngModel)]="hasAddress" placeholder=""/>
+        </div>
+        <div class="form-control form-control-check flex-child">
+            <label for="text">Has Schedule</label>
+            <input type="checkbox" name="hasAppointment" id="hasAppointment" [(ngModel)]="hasAppointment" placeholder=""/>
+        </div>
+    </div>
+
+    <!-- Task Start Time and Task End Time -->
+    <ng-container *ngIf="hasAppointment === true">
+        <div class="flex-box">
+            <div class="form-control form-time flex-child">
+                <label for="text">Start Time: </label>
+                <input type="time" name="taskStartTime" id="taskStartTime" [(ngModel)]="taskStartTime" placeholder="Add Task Start Time"/>
+            </div>
+            <div class="form-control form-time flex-child">
+                <label for="text">End Time: </label>
+                <input type="time" name="taskEndTime" id="taskEndTime" [(ngModel)]="taskEndTime" placeholder="Add Task End Time"/>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="hasAddress === true">
+        <div class="form-control">
+            <label for="text">Street: </label>
+            <input type="text" name="taskStreet" id="taskStreet" [(ngModel)]="taskStreet" placeholder="Street"/>
+        </div>
+        <div class="form-control">
+            <label for="text">City: </label>
+            <input type="text" name="taskCity" id="taskCity" [(ngModel)]="taskCity" placeholder="City"/>
+        </div>
+        <div class="form-control">
+            <label for="text">State: </label>
+            <input type="text" name="taskState" id="taskState" [(ngModel)]="taskState" placeholder="State"/>
+        </div>
+        <div class="form-control">
+            <label for="text">Zip Code: </label>
+            <input type="text" name="taskZipCode" id="taskZipCode" [(ngModel)]="taskZipCode" placeholder="Zip Code"/>
+        </div>
+    </ng-container>
+
+    <div class="form-control">
+        <label for="text">Notification Message:</label>
+        <textarea class="text-area" name="text" [(ngModel)]="generatedMessage"></textarea> <!-- oninput="this.style.height = '10'; this.style.height = this.scrollHeight +'px'" -->
+    </div>
+    <div class="more-padding">
+        <input *ngIf="stageNotification" (click) = stagingNotification() type="submit" style="background-color:gray" value="Generate Message" class="btn btn-block"/>
+    </div>
+    <div class="more-padding">
+        <input *ngIf="saveNotification" (click)=onSubmit() type="submit" style="background-color:maroon" value="Save Notification" class="btn btn-block"/>
+    </div>
+</form>

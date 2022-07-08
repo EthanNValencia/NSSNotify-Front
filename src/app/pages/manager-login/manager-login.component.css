@@ -1,0 +1,10 @@
+.login {
+    max-width: 350px;
+    margin: 50px auto;
+    overflow: auto;
+    min-width: 350px;
+    border: 1px solid darkgray;
+    background: rgb(28, 26, 26);
+    padding: 10px;
+    border-radius: 5px;
+}

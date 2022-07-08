@@ -1,0 +1,7 @@
+<app-manager-item 
+    *ngFor="let manager of company.managers" 
+    [manager]="manager"
+    (onDelete)="deleteManager(manager)"
+    (onToggleSet)="toggle(manager)"
+    (onSendEmailCreds)="sendEmail(manager)"
+></app-manager-item>

@@ -1,0 +1,11 @@
+<div class="about">
+    <h3>Welcome, {{ manager.managerFirstName }} {{ manager.managerLastName }}!</h3>
+    <p>Use the 'Add Employee' button on the left to add a new recipient. You will need to provide their name, phone number, and email address.</p>
+    <p>Use the 'Add Task' button on the right to create new notification.</p>
+    <p>Double click on your employee block for additional information and options.</p>
+    <p>Double click on your task block for additional information and options.</p>
+    <p><span class="dot_green not-selectable"></span> The solid Green Dot indicates that the recipient has a notification set for either today or tomorrow.</p>
+    <p><span class="dot_yellow not-selectable"></span> The Yellow Dot indicates that the recipient has a notification set sometime after tomorrow.</p>
+    <p><span class="dot_red circle_blink not-selectable"></span> The Blinking Red Dot indicates that the recipient has no set notifications.</p>
+    <p><fa-icon class="float-right"[ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>Use the Red X to delete recipients and notifications. A prerequisite for recipient deletion is an absense of notifications.</p>
+</div>

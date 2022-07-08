@@ -1,0 +1,23 @@
+<div class="wrapper">
+    <div class="login">
+        <form class="add-form" (ngSubmit)="onSubmit()">
+            <h1>Manager Login</h1>
+            <div class="flex-box">
+                <div class="form-control flex-child">
+                    <label for="text">Login:</label>
+                    <input type="text" name="email" id="email" [(ngModel)]="email" placeholder="Email"/>
+                </div>
+                <div class="form-control flex-child">
+                    <label for="text">Password:</label>
+                    <input type="text" name="password" id="password" [(ngModel)]="password" placeholder="Password"/>
+                </div>
+            </div>
+            <div class="more-padding">
+                <input type="submit" style="background-color:maroon" value="Login" class="btn btn-block"/>
+            </div>
+            <div class="footer">
+                <p>Company login: <a routerLink="/companylogin">Company Login</a></p>
+            </div>
+        </form>
+    </div>
+</div>

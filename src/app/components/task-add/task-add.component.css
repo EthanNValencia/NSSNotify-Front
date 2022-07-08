@@ -1,0 +1,28 @@
+.form-time {
+    width: 140px;
+}
+
+.form-date {
+    width: 140px;
+}
+
+.text-box {
+    width: 100%;
+}
+
+.flex-box {
+    display: flex;
+}
+
+.flex-child {
+    flex: 0.75;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+
+.text-area {
+    height: 75px;
+    width: 325px;
+}

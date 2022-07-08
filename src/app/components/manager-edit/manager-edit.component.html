@@ -1,0 +1,26 @@
+<form class="add-form" (ngSubmit)="onSubmit()">
+    <h1>Edit Manager</h1>
+    <div class="flex-box">
+        <div class="form-control flex-child">
+            <label for="text">Manager First Name: </label>
+            <input type="text" name="employeeFirstName" id="employeeFirstName" [(ngModel)]="manager.managerFirstName" value="{{manager.managerFirstName}}"/>
+        </div>
+        <div class="form-control flex-child">
+            <label for="text">Manager Last Name: </label>
+            <input type="text" name="employeeLastName" id="employeeLastName" [(ngModel)]="manager.managerLastName" value="{{manager.managerLastName}}"/>
+        </div>
+    </div>
+    <div class="flex-box">
+        <div class="form-control flex-child">
+            <label for="text">Manager Phone Number: </label>
+            <input type="text" name="employeePhone" id="employeePhone" [(ngModel)]="manager.managerPhone" value="{{manager.managerPhone}}"/>
+        </div>
+        <div class="form-control flex-child">
+            <label for="text">Manager Email: </label>
+            <input type="text" name="employeeEmail" id="employeeEmail" [(ngModel)]="manager.managerEmail" value="{{manager.managerEmail}}"/>
+        </div>
+    </div>
+    <div class="more-padding">
+        <input type="submit" style="background-color:maroon" value="Save Changes" class="btn btn-block"/>
+    </div>
+</form>

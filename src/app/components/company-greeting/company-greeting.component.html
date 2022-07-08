@@ -1,0 +1,8 @@
+<div class="company-greeting">
+    <h2>{{company.companyName}} Home</h2>
+    <p>Welcome back. The {{company.companyName}} dashboard is meant to aid the company credential holder with editing and deleting managers.</p>
+    <p>A manager is a user that has the ability to add/edit/delete recipients and add/edit/delete notifications.</p>
+    <p><span class="dot_green not-selectable"></span> The solid Green Dot indicates that the manager has recipients.</p>
+    <p><span class="dot_red circle_blink not-selectable"></span> The Blinking Red Dot indicates that the manager has not created an recipients.</p>
+    <p><fa-icon class="float-right"[ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>Use the Red X to delete managers. A prerequisite for manager deletion is an absense of recipients.</p>
+</div>

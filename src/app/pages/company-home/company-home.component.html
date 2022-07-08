@@ -1,0 +1,20 @@
+<app-navigation-bar homeURL='companyhome' logoutURL='companylogin'></app-navigation-bar>
+<div class="wrapper">
+    <div class="container">
+      <app-header title="Managers" baseURL="companyhome" btnText="Add Manager" btnColor="green" btnClick="toggleAddManager"></app-header>
+      <app-managers></app-managers>
+    </div>
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+<!--
+    <div class="container">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+    <div class="container">
+      <app-header title="Tasks" btnText="Add Task" btnColor="red" btnClick="toggleAddTask"></app-header>
+      <app-tasks-root></app-tasks-root>
+    </div>
+-->
+</div>

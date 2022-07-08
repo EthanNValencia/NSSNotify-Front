@@ -1,0 +1,40 @@
+<div 
+    [ngClass]="{selected: manager.managerSelected}" 
+    class="manager" 
+    (dblclick)="onToggle(manager)">
+    <h3 class="not-selectable">Name: {{manager.managerFirstName}} {{manager.managerLastName}}
+        <fa-icon *ngIf="manager.employees!.length === 0" (click)="deleteManager(manager)" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon></h3>
+    <p class="not-selectable">Phone: {{manager.managerPhone}}</p>
+    <p class="not-selectable">Email: {{manager.managerEmail}}
+    <ng-container *ngIf="manager.employees!.length >= 1" class="not-selectable">
+        <span class="dot_on"></span> 
+    </ng-container>
+    <ng-container *ngIf="manager.employees!.length === 0" class="not-selectable">
+        <span class="dot_off circle_blink"></span> 
+    </ng-container>
+    </p>
+    <p class="not-selectable">Number of Recipients: {{ manager.employees!.length }}</p>
+    <p class="not-selectable">Last Login: 
+        <ng-container *ngIf="manager.managerLastLogin == null || manager.managerLastLogin == ''" class="not-selectable">
+            Never
+        </ng-container>
+        <ng-container *ngIf="manager.managerLastLogin != null || manager.managerLastLogin != ''" class="not-selectable">
+            {{ manager.managerLastLogin! }}
+        </ng-container>
+    </p>
+    <ng-container *ngIf="manager.managerSelected">
+        <app-button
+            text="{{ getBtnText() }}"
+            (btnClick)="toggleEditButton()"
+            color="{{ showEditManager ? 'maroon' : 'green' }}"
+            routerLink="{{ getRouterLink() }}"
+        ></app-button>
+        <app-button
+            [canDisable]="true"
+            class="float-right"
+            text="{{ sentEmailBtnText() }}"
+            (btnClick)="toggleSendEmailButton()"
+            color="{{ sentEmailSelected ? 'maroon' : 'green' }}"
+        ></app-button>
+    </ng-container>
+</div>

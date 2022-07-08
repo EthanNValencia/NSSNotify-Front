@@ -1,0 +1,45 @@
+<div 
+    [ngClass]="{selected: employee.employeeSelected}" 
+    class="employee" 
+    (dblclick)="onToggle(employee)">
+    <h3 class="not-selectable"> <ng-container *ngIf="employee.employeeSelected || !slimUI">Name: </ng-container>
+        {{employee.employeeFirstName}} {{employee.employeeLastName}} 
+        <ng-container *ngIf="employee.employeeHasDailyTask">
+            <span class="dot_green not-selectable"></span> 
+        </ng-container>
+        <ng-container *ngIf="!employee.employeeHasDailyTask && (employee.tasks!.length == 0)">
+            <span class="dot_red circle_blink not-selectable"></span> 
+        </ng-container>
+        <ng-container *ngIf="!employee.employeeHasDailyTask && (employee.tasks!.length > 0)">
+            <span class="dot_yellow not-selectable"></span> 
+        </ng-container>
+    </h3>
+
+    <ng-container *ngIf="employee.employeeSelected || !slimUI">
+        <p class="not-selectable">Phone: {{employee.employeePhone}}</p>
+        <p class="not-selectable">Email: {{employee.employeeEmail}}
+            <fa-icon class="float-right" *ngIf="employee.tasks!.length === 0" (click)="deleteEmployee(employee)" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>
+        </p>
+        <ng-container *ngIf="employee.employeeSelected">
+            <p class="not-selectable">Tasks Assigned: {{ employee.tasks!.length }}</p>
+            <p class="not-selectable">Last Sent Message: 
+                <ng-container *ngIf="employee.employeeLastMessage == null || employee.employeeLastMessage == ''" class="not-selectable">
+                    Never
+                </ng-container>
+                <ng-container *ngIf="employee.employeeLastMessage != null || employee.employeeLastMessage != ''" class="not-selectable">
+                    {{ employee.employeeLastMessage! }}
+                </ng-container>
+            </p>
+        </ng-container>
+        <ng-container *ngIf="employee.employeeSelected">
+            <app-button
+                text="{{ getBtnText() }}"
+                (btnClick)="toggleEditButton()"
+                color="{{ showEditEmployee ? 'maroon' : 'green' }}"
+                routerLink="{{ getRouterLink() }}"
+            ></app-button>
+        </ng-container>
+
+    </ng-container>
+
+</div>

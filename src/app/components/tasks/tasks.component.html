@@ -1,0 +1,14 @@
+<!--  <app-task-add (onAddTask)="addTask($event)"></app-task-add> -->
+<app-task-item
+    *ngFor="let task of tasks"
+    [task]="task"
+    [tasks]="tasks"
+    (onDeleteTask)="deleteTask(task)"
+    (onToggleTask)="toggleTask(task)"
+    (onAddTask)="addTask(task)"
+></app-task-item>
+<!-- 
+    The onDeleteTask means that when onDeleteTask is emitted from the task-item 
+    component that it will call the deleteTask(task) method in tasks. The task object
+    will be passed up to the parent method this way. 
+-->

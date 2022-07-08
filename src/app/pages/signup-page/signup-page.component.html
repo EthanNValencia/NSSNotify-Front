@@ -1,0 +1,52 @@
+<div class="wrapper">
+    <div class="signup">
+        <form class="add-form" (ngSubmit)="onSubmit()">
+            <p></p>
+            <h1 class="title">Create Company Account</h1>
+            <div class="form-control">
+                <label for="text">Company Name:</label>
+                <input type="text" name="companyname" id="companyname" [(ngModel)]="companyName" placeholder="Company Name"/>
+            </div>
+            <div class="form-control">
+                <label for="text">Company Email Login:</label>
+                <input type="text" name="companyemail" id="companyemail" [(ngModel)]="companyEmail" placeholder="Company Email"/>
+            </div>
+            <div class="flex-box">
+            <div class="form-control flex-child">
+                <label for="text">Password:</label>
+                <input type="text" name="passwordone" id="passwordone" [(ngModel)]="passwordOne" placeholder="Type Password"/>
+            </div>
+            <div class="form-control flex-child">
+                <label for="text">Retype Password:</label>
+                <input type="text" name="passwordtwo" id="passwordtwo" [(ngModel)]="passwordTwo" placeholder="Retype Password"/>
+            </div>
+            </div>
+            <div class="form-control form-control-check">
+                <label for="selectedFrequency">Max Number of Managers:</label>
+                <select id="selectedFrequency" name="selectedFrequency" [(ngModel)]="numberOfManagers">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            
+            <div class="payment-area">
+                <p>PAYMENT AREA</p>
+            </div>
+
+        <div class="more-padding">
+            <input type="submit" style="background-color:maroon" value="Create Account" class="btn btn-block"/>
+        </div>
+        </form>
+        <div class="footer">
+            <p>Have account? <a routerLink="/companylogin">Login</a></p>
+        </div>
+    </div>
+</div>

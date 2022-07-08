@@ -1,0 +1,70 @@
+<form class="add-form edit-task-form">  <!-- (ngSubmit)="onSubmit()" -->
+    <h1>Edit Task</h1>
+    <div class="form-control">
+        <label for="text">Name: </label>
+        <input type="text" name="taskName" id="taskName" [(ngModel)]="currentTask.taskName"/>
+    </div>
+
+    <div class="form-control">
+        <label for="text">Task Description:</label>
+        <input type="text" name="taskDescription" id="taskDescription" [(ngModel)]="currentTask.taskDescription"/>
+    </div>
+
+    <!-- Notification Time and Notification Date -->
+
+    <div class="flex-box">
+        <div class="form-control form-time flex-child">
+            <label for="text">Notification Time:</label>
+            <input type="time" name="taskNotifyTime" id="taskNotifyTime" [(ngModel)]="currentTask.taskNotifyTime"/>
+        </div>
+        <div class="form-control form-date flex-child">
+            <label for="text">Notification Date:</label>
+            <input type="date" name="taskDate" id="taskDate" min="{{ getMinDate() }}" max="{{ getMaxDate() }}" [(ngModel)]="currentTask.taskDate.date"/>
+        </div>
+    </div>
+
+    <!-- Task Start Time and Task End Time --> 
+    <ng-container *ngIf="currentTask.taskStartTime !== '' &&  currentTask.taskEndTime !== '' && currentTask.taskStartTime !== null &&  currentTask.taskEndTime !== null">
+        <div class="flex-box">
+            <div class="form-control form-time flex-child">
+                <label for="text">Start Time: </label>
+                <input type="time" name="taskStartTime" id="taskStartTime" [(ngModel)]="currentTask.taskStartTime"/>
+            </div>
+            <div class="form-control form-time flex-child">
+                <label for="text">End Time: </label>
+                <input type="time" name="taskEndTime" id="taskEndTime" [(ngModel)]="currentTask.taskEndTime"/>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentTask.taskStreet !== null && currentTask.taskCity !== null && currentTask.taskState !== null && currentTask.taskZipCode !== null &&
+                         currentTask.taskStreet !== '' && currentTask.taskCity !== '' && currentTask.taskState !== '' && currentTask.taskZipCode !== '' ">
+        <div class="flex-box">
+            <div class="form-control flex-child">
+                <label for="text">Street: </label>
+                <input type="text" name="taskStreet" id="taskStreet" [(ngModel)]="currentTask.taskStreet" placeholder="Street"/>
+            </div>
+            <div class="form-control flex-child">
+                <label for="text">City: </label>
+                <input type="text" name="taskCity" id="taskCity" [(ngModel)]="currentTask.taskCity" placeholder="City"/>
+            </div>
+        </div>
+        <div class="flex-box">
+            <div class="form-control flex-child">
+                <label for="text">State: </label>
+                <input type="text" name="taskState" id="taskState" [(ngModel)]="currentTask.taskState" placeholder="State"/>
+            </div>
+            <div class="form-control flex-child">
+                <label for="text">Zip Code: </label>
+                <input type="text" name="taskZipCode" id="taskZipCode" [(ngModel)]="currentTask.taskZipCode" placeholder="Zip Code"/>
+            </div>
+        </div>
+    </ng-container>
+
+    <div class="form-control">
+        <label for="text">Notification Message:</label>
+        <textarea class="text-area" name="text" [(ngModel)]="currentTask.taskMessage"></textarea> <!-- oninput="this.style.height = '10'; this.style.height = this.scrollHeight +'px'" -->
+    </div>
+    <div class="more-padding">
+        <input (click)=onSubmit() type="submit" style="background-color:maroon" value="Update Notification" class="btn btn-block"/>
+    </div>
+</form>
