@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Company, Manager } from 'src/app/employee';
+import { Company, Manager } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 
@@ -19,7 +19,7 @@ export class ManagersComponent implements OnInit {
   }
 
   deleteManager(manager: Manager) {
-    this.data.deleteManager(manager.id!, this.resourceService);
+    this.data.deleteManager(manager.managerId!, this.company, this.resourceService);
   }
 
   sendEmail(manager: Manager) {
@@ -28,7 +28,7 @@ export class ManagersComponent implements OnInit {
 
   toggle(manager: Manager) {
     for(var i = 0; i < this.company.managers!.length; i++) {
-      if(this.company.managers![i].id !== manager.id) {
+      if(this.company.managers![i].managerId !== manager.managerId) {
         this.company.managers![i].managerSelected = false;
       } else {
         this.company.managers![i].managerSelected = !this.company.managers![i].managerSelected;

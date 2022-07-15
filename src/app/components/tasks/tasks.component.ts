@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Task } from '../../task';
+import { Task } from 'src/app/json-objects';
 
 @Component({
   selector: 'app-tasks',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Manager } from 'src/app/employee';
 import { DataService } from 'src/app/services/data.service';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Manager } from 'src/app/json-objects';
 
 @Component({
   selector: 'app-manager-greeting',

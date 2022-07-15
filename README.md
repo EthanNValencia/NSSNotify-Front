@@ -1,3 +1,14 @@
+# Run Command
+ng serve --disableHostCheck=true --port 4402 --ssl true --ssl-key {KEY-PATH} --ssl-cert {CERT-PATH}
+ng serve --disableHostCheck=true --port 4402
+
+ng serve -o --ssl true --ssl-key ssl/keypair.key --ssl-cert ssl/nsscert.crt --disableHostCheck=true --port 4402
+
+ng serve -o --ssl true --disableHostCheck=true --port 4402
+
+Notify-Front-End/ssl/bootsecurity.crt
+Notify-Front-End/ssl/ssl-server.jks
+
 # NotifyFrontEnd
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.

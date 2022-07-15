@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Manager } from 'src/app/employee';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Manager, Token } from 'src/app/json-objects';
 
 @Component({
   selector: 'app-manager-login',
@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ManagerLoginComponent implements OnInit {
 
   private manager!: Manager;
+  token!: Token;
   email!: string;
   password!: string;
   
@@ -20,6 +21,7 @@ export class ManagerLoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.currentManager.subscribe(manager => this.manager = manager);
+    this.data.currentToken.subscribe(token => this.token = token);
   }
 
   onSubmit() {
@@ -30,12 +32,21 @@ export class ManagerLoginComponent implements OnInit {
     if(!this.password) {
       alert('Please enter your password!');
       return;
-    } 
-    this.data.beginLogin(this.email, this.password, this.resource).subscribe({
-      next: (manager) => (this.data.changeManager(manager)),
+    }
+    this.manager.managerEmail = this.email;
+    this.manager.managerPassword = this.password;
+    console.log("Attempting to login: " + JSON.stringify(this.manager));
+
+    this.data.getManagerToken(this.manager, this.resource).subscribe({
+      next: (token) => this.data.changeToken(token),
       error: () => this.failedLogin(),
-      complete: () => this.verifyLogin()
-    }); 
+      complete: () => this.data.beginManagerLogin(this.manager.managerEmail!, this.manager.managerPassword!, this.resource, this.token).subscribe({
+        next: (manager) => (this.data.changeManager(manager)),
+        error: () => this.failedLogin(),
+        complete: () => this.verifyLogin()
+      }),
+    });
+    
   }
 
   private failedLogin() {
@@ -52,7 +63,7 @@ export class ManagerLoginComponent implements OnInit {
   }
 
   private verifyLogin() {
-    if(this.manager.id != null) {
+    if(this.manager.managerId != null) {
       this.successfulLogin();
     } else {
       this.failedLogin();

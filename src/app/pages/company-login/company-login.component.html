@@ -5,11 +5,11 @@
             <div class="flex-box">
                 <div class="form-control flex-child">
                     <label for="text">Company Login:</label>
-                    <input type="text" name="email" id="email" [(ngModel)]="company.companyEmail" placeholder="Company Email"  value="{{ company.companyEmail }}"/>
+                    <input type="text" name="email" id="email" [(ngModel)]="company.companyEmail" placeholder="Company Email"  value="{{ company.companyEmail! }}"/>
                 </div>
                 <div class="form-control flex-child">
                     <label for="text">Password:</label>
-                    <input type="text" name="password" id="password" [(ngModel)]="company.companyPassword" placeholder="Company Password" value="{{ company.companyPassword }}"/>
+                    <input type="text" name="password" id="password" [(ngModel)]="company.companyPassword" placeholder="Company Password" value="{{ company.companyPassword! }}"/>
                 </div>
             </div>
             <div class="more-padding">

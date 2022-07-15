@@ -1,219 +1,198 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { Company, Employee, Manager } from '../employee';
-import { Task, Frequency } from '../task';
+import { Observable, Subscription, throwError } from 'rxjs';
+import { AuthRequest, Company, Manager, Recipient, Task, Token } from '../json-objects';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResourceService {
   
-  private API_BASE_URL = 'https://192.168.0.6:8085/rest/';
-  private API_GET_EMPLOYEES = this.API_BASE_URL + 'get/employees';
-  private API_GET_MANAGER = this.API_BASE_URL + 'get/manager';
-  private API_DELETE_TASK = this.API_BASE_URL + 'delete/task';
-  private API_DELETE_EMPLOYEE = this.API_BASE_URL + 'delete/employee';
-  private API_UPDATE_EMPLOYEE = this.API_BASE_URL + 'put/employee';
-  private API_POST_EMPLOYEE = this.API_BASE_URL + 'post/create-employee';
-  private API_POST_TASK = this.API_BASE_URL + 'post/create-task';
-  private API_UPDATE_TASK = this.API_BASE_URL + 'put/task';
-  private API_GET_FREQUENCIES = this.API_BASE_URL + 'get/frequencies';
-  private API_POST_COMPANY = this.API_BASE_URL + 'post/create-company';
-  private API_GET_COMPANY = this.API_BASE_URL + 'get/company';
-  private API_NOTIFY_MANAGER = this.API_BASE_URL + 'post/notify-manager';
-  private API_POST_MANAGER = this.API_BASE_URL + "post/create-manager";
-  private API_DELETE_MANAGER = this.API_BASE_URL + "delete/manager";
-  private API_UPDATE_MANAGER = this.API_BASE_URL + "put/manager";
-  private managerId = 1; // The ID will be generated dynamically when the login is setup.
-  private managerPassword!: string;
-  private managerEmail!: string;
-  private companyPassword!: string;
-  private companyEmail!: string;
+  private API_BASE_URL = 'http://192.168.0.6:8080/nss/';
+  private API_DELETE_TASK = this.API_BASE_URL + 'delete/task/'; // By ID
+  private API_DELETE_RECIPIENT = this.API_BASE_URL + 'delete/recipient/'; // By ID
+  private API_CREATE_MANAGER = this.API_BASE_URL + "post/create-manager";
+  private API_CREATE_COMPANY = this.API_BASE_URL + "create-company";
+  private API_GET_COMPANY_BY_ID = this.API_BASE_URL + "get/company/"; 
+  private API_GET_MANAGER_BY_ID = this.API_BASE_URL + 'get/manager/';
+  private API_UPDATE_RECIPIENT = this.API_BASE_URL + 'put/update-recipient'; // updated
+  private API_POST_RECIPIENT = this.API_BASE_URL + 'post/create-recipient'; // updated
+  private API_POST_TASK = this.API_BASE_URL + 'post/create-task'; // updated
+  private API_UPDATE_TASK = this.API_BASE_URL + 'update/task';  // updated
+  private API_POST_COMPANY = this.API_BASE_URL + 'company-login'; // updated
+  // private API_CREATE_COMPANY = this.API_BASE_URL + "post/company";
+  private API_NOTIFY_MANAGER = this.API_BASE_URL + 'post/notify-manager'; // not updated
+  private API_POST_MANAGE_LOGIN = this.API_BASE_URL + "manager-login"; // updated
+  private API_DELETE_MANAGER = this.API_BASE_URL + "delete/manager"; // updated
+  private API_UPDATE_MANAGER = this.API_BASE_URL + "put/update-manager"; // updated
+  
+  private API_GENERATE_COMPANY_TOKEN = this.API_BASE_URL + "auth/company/signup";
+  private API_GENERATE_MANAGER_TOKEN = this.API_BASE_URL + "auth/manager/signup";
+
+  private API_AUTH = this.API_BASE_URL + "auth/login";
+  //  this.data.currentToken.subscribe(token => this.token = token);
+
+
+  private HEADERS_ONLY_TOKEN = { }
+
+  private HEADERS_CONTENT_TOKEN = { }
+
+  private HEADERS_CONTENT = {
+    headers: new HttpHeaders({
+      'Content-Type' : 'application/json'
+    })
+  }
+
+  private setHeaders(token: Token) {
+    this.HEADERS_CONTENT_TOKEN = {
+      headers: new HttpHeaders({
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer ' + token.access_token
+      })
+    }
+    this.HEADERS_ONLY_TOKEN = {
+      headers: new HttpHeaders({
+        'Authorization' : 'Bearer ' + token.access_token
+      })
+    }
+  }
 
   constructor(private http: HttpClient) { }
 
-  getEmployees(): Observable<Employee[]> { // This is deprecated
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'manager_id' : this.managerId.toString()
-      })
-    }
-    return this.http.get<Employee[]>(this.API_GET_EMPLOYEES, httpOptions);
+  getCompanyById(company: Company): Observable<Company> {
+    const url = `${this.API_GET_COMPANY_BY_ID}${company.companyId}`;
+    return this.http.get<Company>(url, this.HEADERS_ONLY_TOKEN);
   }
 
-  loginManager(email: string, password: string) {
-    this.managerEmail = email;
-    this.managerPassword = password;
-    return this.getManager();
+  loginManager(email: string, password: string, token: Token): Observable<Manager>  {
+    const manager: Manager = {
+      managerEmail: email,
+      managerPassword: password,
+      managerFirstName: null,
+      managerSelected: null,
+      managerLastName: null,
+      managerPhone: null,
+      maxRecipients: null,
+      managerLastLogin: null,
+      recipients: []
+    }
+    // console.log("Token: " + token.access_token);
+    this.setHeaders(token);
+    return this.postManager(manager);
   }
 
-  loginCompany(email: string, password: string) {
-    this.companyEmail = email;
-    this.companyPassword = password;
-    var company: Observable<Company> = this.getCompany();
-    console.log("HERE " + company);
-    if(company == null){
-      throwError(() => new Error('test'))
-    }
-    return company;
+  postManager(manager: Manager): Observable<Manager> { 
+    return this.http.post<Manager>(this.API_POST_MANAGE_LOGIN, manager, this.HEADERS_CONTENT_TOKEN);
   }
 
-  getManager(): Observable<Manager> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'manager_email' : this.managerEmail, 
-        'manager_password' : this.managerPassword
-      })
+  loginCompany(email: string, password: string, token: Token): Observable<Company> {
+    const company: Company = {
+      companyName: null,
+      maxManagers: null,
+      creationDate: null,
+      companyEmail: email,
+      companyPassword: password,
+      companyLastLogin: null,
+      managers: []
     }
-    return this.http.get<Manager>(this.API_GET_MANAGER, httpOptions);
+    // console.log("Attempting Login: " + JSON.stringify(company))
+    this.setHeaders(token);
+    return this.postCompany(company);
   }
 
-  getCompany(): Observable<Company> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'company_email' : this.companyEmail, 
-        'company_password' : this.companyPassword
-      })
-    }
-    return this.http.get<Company>(this.API_GET_COMPANY, httpOptions);
+  authenticateCompanyLogin(company: Company): Observable<Token> {
+    var auth: AuthRequest = {
+      email: company.companyEmail!,
+      password: company.companyPassword!
+    };
+    return this.http.post<Token>(this.API_AUTH, auth, this.HEADERS_CONTENT);
   }
 
-  getFrequencies(): Observable<Frequency[]> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e'
-      })
-    }
-    return this.http.get<Frequency[]>(this.API_GET_FREQUENCIES, httpOptions);
+  authenticateManagerLogin(manager: Manager): Observable<Token> {
+    console.log("HERE " + JSON.stringify(manager));
+    var auth: AuthRequest = {
+      email: manager.managerEmail!,
+      password: manager.managerPassword!
+    };
+    return this.http.post<Token>(this.API_AUTH, auth, this.HEADERS_CONTENT);
   }
-  
+
+  generateCompanyToken(company: Company): Observable<Token> {
+    console.log(JSON.stringify(company));
+    return this.http.post<Token>(this.API_GENERATE_COMPANY_TOKEN, company, this.HEADERS_CONTENT);
+  }
+
+  createManagerToken(manager: Manager): Subscription {
+    return this.generateManagerToken(manager).subscribe();
+  }
+
+  generateManagerToken(manager: Manager): Observable<Token> {
+    console.log(JSON.stringify(manager));
+    return this.http.post<Token>(this.API_GENERATE_MANAGER_TOKEN, manager, this.HEADERS_CONTENT);
+  }
+
+  postCompany(company: Company): Observable<Company> {
+    // console.log(JSON.stringify(company));
+    return this.http.post<Company>(this.API_POST_COMPANY, company, this.HEADERS_CONTENT_TOKEN);
+  }
+
+  getManager(manager: Manager): Observable<Manager> {
+    const url = `${this.API_GET_MANAGER_BY_ID}${manager.managerId}`;
+    return this.http.get<Manager>(url, this.HEADERS_CONTENT_TOKEN);
+  }
+
   deleteTask(task: Task): Observable<Task> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e'
-      })
-    }
-    const url = `${this.API_DELETE_TASK}/${task.id}`;
-    return this.http.delete<Task>(url, httpOptions);
+    const url = `${this.API_DELETE_TASK}${task.taskId}`;
+    return this.http.delete<Task>(url, this.HEADERS_ONLY_TOKEN);
   }
 
-  deleteEmployee(employee: Employee): Observable<Employee> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e'
-      })
-    }
-    const url = `${this.API_DELETE_EMPLOYEE}/${employee.id}`;
-    return this.http.delete<Employee>(url, httpOptions);
+  deleteRecipient(recipient: Recipient): Observable<Recipient> {
+    const url = `${this.API_DELETE_RECIPIENT}${recipient.recipientId}`;
+    return this.http.delete<Recipient>(url, this.HEADERS_ONLY_TOKEN);
   }
 
   updateTask(task: Task): Observable<Task> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json'
-      })
-    }
     // console.log(JSON.stringify(task));
-    return this.http.put<Task>(this.API_UPDATE_TASK, task, httpOptions);
+    return this.http.put<Task>(this.API_UPDATE_TASK, task, this.HEADERS_CONTENT_TOKEN);
   }
 
-  updateEmployee(employee: Employee): Observable<Employee> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json'
-      })
-    }
+  updateRecipient(recipient: Recipient): Observable<Recipient> {
     // console.log(JSON.stringify(employee));
-    return this.http.put<Employee>(this.API_UPDATE_EMPLOYEE, employee, httpOptions);
+    return this.http.put<Recipient>(this.API_UPDATE_RECIPIENT, recipient, this.HEADERS_CONTENT_TOKEN);
   }
 
   updateManager(manager: Manager) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json'
-      })
-    }
-    // manager.employees = [];
-    // console.log(JSON.stringify(manager));
-    return this.http.put<Manager>(this.API_UPDATE_MANAGER, manager, httpOptions);
+    return this.http.put<Manager>(this.API_UPDATE_MANAGER, manager, this.HEADERS_CONTENT_TOKEN);
   }
 
-  addEmployee(newEmployee: Employee): Observable<Employee> { 
-    newEmployee.manager!.id = this.managerId;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json',
-      })
-    }
-    // console.log(newEmployee);
-    return this.http.post<Employee>(this.API_POST_EMPLOYEE, newEmployee, httpOptions);
+  addRecipient(recipient: Recipient): Observable<Recipient> {
+    return this.http.post<Recipient>(this.API_POST_RECIPIENT, recipient, this.HEADERS_CONTENT_TOKEN);
   }
 
   addTask(newTask: Task): Observable<Task> { 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json',
-      })
-    }
     // console.log(newTask);
-    return this.http.post<Task>(this.API_POST_TASK, newTask, httpOptions);
+    return this.http.post<Task>(this.API_POST_TASK, newTask, this.HEADERS_CONTENT_TOKEN);
   }
 
-  addCompany(company: Company): Observable<Company> {
-    this.companyEmail = company.companyEmail;
-    this.companyPassword = company.companyPassword!;
-    console.log(JSON.stringify(company));
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json',
-        'company_email' : this.companyEmail,
-        'company_password' : this.companyPassword,
-      })
-    }
-    return this.http.post<Company>(this.API_POST_COMPANY, company, httpOptions);
+  addCompany(company: Company, token: Token): Observable<Company> {
+    // console.log(JSON.stringify(company));
+    this.setHeaders(token);
+    return this.http.post<Company>(this.API_CREATE_COMPANY, company, this.HEADERS_CONTENT_TOKEN);
   }
 
   notifyManager(manager: Manager) {
-    console.log(manager);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json',
-      })
-    }
-    return this.http.post<Manager>(this.API_NOTIFY_MANAGER, manager, httpOptions);
+    return this.http.post<Manager>(this.API_NOTIFY_MANAGER, manager, this.HEADERS_CONTENT_TOKEN);
   }
 
-  addManager(manager: Manager, companyId: number) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e',
-        'content-type' : 'application/json',
-        'company_id' : companyId.toString()
-      })
-    }
+  addManager(manager: Manager) {
     // console.log(newTask);
-    return this.http.post<Manager>(this.API_POST_MANAGER, manager, httpOptions);
+    this.createManagerToken(manager);
+    return this.http.post<Manager>(this.API_CREATE_MANAGER, manager, this.HEADERS_CONTENT_TOKEN);
   }
 
   deleteManager(managerId: number) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'api_key' : '11cad700-827c-47c2-9c8e-ad554539d63e'
-      })
-    }
     const url = `${this.API_DELETE_MANAGER}/${managerId}`;
-    return this.http.delete<Manager>(url, httpOptions);
+    return this.http.delete<Manager>(url, this.HEADERS_ONLY_TOKEN);
   }
 
 }

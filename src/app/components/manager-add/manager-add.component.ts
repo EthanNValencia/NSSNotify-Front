@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Company, Manager } from 'src/app/employee';
+import { Company, Manager } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 import { UiService } from 'src/app/services/ui.service';
@@ -56,8 +56,19 @@ export class ManagerAddComponent implements OnInit {
       alert('Please select the max number of recipients for your manager.');
       return;
     }
+    if(!this.data.checkPhoneNumber(this.managerPhoneNumber)) {
+      alert('Phone numbers should be in the following format: + the 1-digit country code, a 3-digit area code and a 7-digit telephone number.\nExample of a valid phone number: +14073003000')
+      return;
+    }
+    if(!this.company.companyEmail == !this.managerEmail) {
+      alert('You cannot use your company email address for a manager.')
+      return;
+    }
+    var company: Company = {
+      companyId: this.company.companyId
+    }
     const manager: Manager = {
-      id: null,
+      managerId: null,
       managerFirstName: this.managerFirstName,
       managerLastName: this.managerLastName,
       managerPhone: this.managerPhoneNumber,
@@ -65,11 +76,11 @@ export class ManagerAddComponent implements OnInit {
       managerSelected: false,
       managerEmail: this.managerEmail,
       managerPassword: this.passwordOne,
-      maxEmployees: this.numberOfEmployees,
-      employees: []
+      maxRecipients: this.numberOfEmployees,
+      company: company,
+      recipients: []
     }
-    this.data.addManager(manager, this.company.id!, this.resourceService);
-    // companyhome
+    this.data.addManager(manager, this.company, this.resourceService);
     this.uiService.clearUI();
     this.route.navigate(['/companyhome/']);
   }

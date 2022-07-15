@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Company, Manager } from 'src/app/employee';
+import { Company, Manager } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 import { UiService } from 'src/app/services/ui.service';
@@ -35,15 +35,13 @@ export class ManagerEditComponent implements OnInit {
       alert('Please enter your manager email address.');
       return;
     }
-    if(!this.manager.maxEmployees) {
+    if(!this.manager.maxRecipients) {
       alert('Please select the max number of recipients for your manager.');
       return;
     }
-    // this.manager.company.id = this.company.id!;
-    // console.log(JSON.stringify(this.manager));
+    console.log(JSON.stringify(this.manager));
     this.data.changeManager(this.manager);
     this.resourceService.updateManager(this.manager).subscribe();
-    // companyhome
     this.uiService.clearUI();
     this.route.navigate(['/companyhome/']);
   }

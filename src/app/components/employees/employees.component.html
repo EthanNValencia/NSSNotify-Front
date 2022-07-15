@@ -1,7 +1,7 @@
 <!-- <app-employee-add (onAddEmployee)="addEmployee($event)"></app-employee-add> -->
 <app-employee-item 
-    *ngFor="let employee of manager.employees" 
-    [employee]="employee"
-    (onDeleteEmployee)="deleteEmployee(employee)"
-    (onToggleSet)="toggle(employee)"
+    *ngFor="let recipient of manager.recipients" 
+    [recipient]="recipient"
+    (onDeleteRecipient)="deleteRecipient(recipient)"
+    (onToggleSet)="toggle(recipient)"
 ></app-employee-item>

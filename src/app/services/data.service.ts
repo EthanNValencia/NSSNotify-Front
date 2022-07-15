@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { Company, Employee, Manager } from '../employee';
-import { Task } from '../task';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Company, Manager, Recipient, Task, Token } from '../json-objects';
 import { ResourceService } from './resource.service';
 import { UiService } from './ui.service';
 
@@ -19,14 +18,18 @@ export class DataService {
   private tasks: BehaviorSubject<Task[]> = this.getInitialTasks();
   currentTasks = this.tasks.asObservable();
 
-  private editEmployee: BehaviorSubject<Employee> = this.getInitialEmployeeEdit();
-  currentEmployeeEdit = this.editEmployee.asObservable();
+  private editRecipient: BehaviorSubject<Recipient> = this.getInitialRecipientEdit();
+  currentRecipientEdit = this.editRecipient.asObservable();
 
   private manager: BehaviorSubject<Manager> = this.getInitialManager();
   currentManager = this.manager.asObservable();
 
   public employeeItemSelectedSubject = new BehaviorSubject<boolean>(false);
   employeeItemSelected = this.employeeItemSelectedSubject.asObservable();
+
+
+  private token: BehaviorSubject<Token> = this.getEmptyToken();
+  currentToken = this.token.asObservable();
 
   private timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   private rightNowDateTime = new Date();
@@ -102,11 +105,12 @@ export class DataService {
     return timeString;
   }
 
-  public addCompany(company: Company, resourceService: ResourceService): Observable<Company> {
+  public addCompany(company: Company, resourceService: ResourceService, token: Token): Observable<Company> {
     company.creationDate = this.minDate;
     // console.log(JSON.stringify(company));
-    return resourceService.addCompany(company);
+    return resourceService.addCompany(company, token);
     // this.changeCompany(company);
+    // return resourceService.createCompanyAndToken(company);
   }
 
   experimentTime() {
@@ -127,16 +131,21 @@ export class DataService {
     // var notifyMinute =  parseInt(task.taskNotifyTime!.substring(3, 5), 10);
     // console.log("The notify time is: " + notifyHour + ":" + notifyMinute);
     // console.log("The this.minHour+this.minMinute is: " + this.minHour + ":" + this.minMinute);
-    if(this.minDate == task.taskDate.date) {
-      if(notifyHour <= this.minHour!) {
-        if(notifyMinute <= this.minMinute!) {
-          // console.log("FALSE");
-          return false;
-        }
+    if(this.minDate == task.notifyDate!) {
+      console.log("True 1");
+      if((notifyHour >= this.minHour!) && (notifyMinute >= this.minMinute!)) {
+        console.log("True 2");
+        return true;
       }
-    } 
-    // console.log("TRUE");
-    return true;
+    }
+    /*
+    console.log("this.minDate == task.notifyDate: " + (this.minDate == task.notifyDate!));
+    console.log("this.minDate === task.notifyDate: " + (this.minDate === task.notifyDate!));
+    console.log("2022-07-11" == "2022-07-11");
+    console.log("Min Date: " + this.minDate + " Min Hour: " + this.minHour + " Min Minute: " + this.minMinute);
+    console.log("Task Date " + task.notifyDate + " Task Hour: " + notifyHour + " Task Minute: " + notifyMinute);
+    */
+    return false;
   }
 
   addHourToDate(date: Date): Date {
@@ -182,49 +191,42 @@ export class DataService {
 
   constructInitialTask(): Task {
     const task = { 
-      id: 0,
       taskSelected: false,
-      taskDateUpdated: false,
       taskNotifyTime: "",
       taskStartTime: "",
       taskEndTime: "",
+      notifyDate: "",
+      notifyFrequency: "",
       taskName: "",
       taskDescription: "",
       taskStreet: "",
       taskCity: "",
       taskState: "",
       taskZipCode: "",
+      taskSent: false,
+      taskDateUpdated: false,
       taskMessage: "",
-      taskDate: {
-          id: 0,
-          date: ""
-      },
-      frequency: {
-          id: 0,
-          frequency: ""
-      }, employee: {
-          id: 0,
-      }
+      recipient: null,
     };
     return task;
   }
 
-  constructInitialEmployeeEdit(): Employee {
-    const employee = {
-      employeeSelected: false,
-      employeeFirstName: 'Test',
-      employeeLastName: 'Test',
-      employeePhone: 'Test',
-      employeeEmail: 'Test',
-      employeeLastMessage: null,
-      employeeHasDailyTask: false,
-      tasks: null,
+  constructInitialRecipientEdit(): Recipient {
+    const recipient = {
+      recipientSelected: false,
+      recipientHasDailyTask: false,
+      recipientFirstName: 'Test',
+      recipientLastName: 'Test',
+      recipientPhone: 'Test',
+      recipientEmail: 'Test',
+      recipientLastMessage: null,
+      tasks: []
     }
-    return employee;
+    return recipient;
   }
 
   constructInitialManager(): Manager {
-    const employees: Employee[] = []; 
+    const recipients: Recipient[] = []; 
     const manager = {
       id: null,
       managerFirstName: 'Test',
@@ -235,14 +237,14 @@ export class DataService {
       managerEmail: 'Test',
       managerPassword: 'Test',
       maxEmployees: 0,
-      employees: employees
+      recipients: recipients
     }
     return manager; 
   }
 
   constructEmptyCompany(): Company {
     const company: Company = {
-      id: null,
+      companyId: null,
       companyName: '',
       companyPassword: null,
       maxManagers: 0,
@@ -254,12 +256,20 @@ export class DataService {
     return company;
   }
 
+  constructEmptyToken(): Token {
+    const token: Token = {
+      email: '',
+      access_token: ''
+    }
+    return token;
+  }
+
   private getInitialTasks(): BehaviorSubject<Task[]> {
     return new BehaviorSubject<Task[]>(this.constructInitialTasks());
   }
 
-  private getInitialEmployeeEdit(): BehaviorSubject<Employee> {
-    return new BehaviorSubject<Employee>(this.constructInitialEmployeeEdit());
+  private getInitialRecipientEdit(): BehaviorSubject<Recipient> {
+    return new BehaviorSubject<Recipient>(this.constructInitialRecipientEdit());
   }
 
   private getInitialManager(): BehaviorSubject<Manager> {
@@ -272,6 +282,10 @@ export class DataService {
 
   private getNullCompany(): BehaviorSubject<Company> {
     return new BehaviorSubject<Company>(this.constructEmptyCompany());
+  }
+
+  getEmptyToken(): BehaviorSubject<Token> {
+    return new BehaviorSubject<Token>(this.constructEmptyToken());
   }
 
   checkPhoneNumber(employeePhone: string): boolean {
@@ -304,18 +318,25 @@ export class DataService {
     this.editTask.next(task);
   }
 
-  changeTasks(tasks: Task[], employee: Employee) {
+  changeToken(token: Token) {
+    if(token != null) {
+      console.log("Change Token: " + token.access_token);
+      this.token.next(token);
+    }
+  }
+
+  changeTasks(tasks: Task[], recipient: Recipient) {
     this.tasks.next(tasks);
-    this.editEmployee.next(employee);
+    this.editRecipient.next(recipient);
   }
 
   changeManager(manager: Manager) {
     if(manager != null) {
       if(this.selectedEmployeeId !== null) {
-        for (var i = 0; i < manager.employees!.length; i++) {
-          if(manager.employees![i].id === this.selectedEmployeeId) {
-            manager.employees![i].employeeSelected = true;
-            this.changeTasks(manager.employees![i].tasks!, manager.employees![i]);
+        for (var i = 0; i < manager.recipients!.length; i++) {
+          if(manager.recipients![i].recipientId === this.selectedEmployeeId) {
+            manager.recipients![i].recipientSelected = true;
+            this.changeTasks(manager.recipients![i].tasks!, manager.recipients![i]);
           }
         }
       }
@@ -323,40 +344,54 @@ export class DataService {
     }
   }
 
-  changeEmployeeEdit(employee: Employee) {
-    this.editEmployee.next(employee);
+  changeEmployeeEdit(recipient: Recipient) {
+    this.editRecipient.next(recipient);
   }
 
   changeEmployeeItemSelected(bool: boolean) {
     this.employeeItemSelectedSubject.next(bool);
   }
   
-  public addEmployee(employee: Employee, resource: ResourceService) {
-    resource.addEmployee(employee).subscribe(() => resource.getManager().subscribe((manager) => (this.changeManager(manager))));
+  public addRecipient(recipient: Recipient, manager: Manager, resource: ResourceService) {
+
+    resource.addRecipient(recipient).subscribe(() => resource.getManager(manager).subscribe((manager) => (this.changeManager(manager))));
   }
 
-  public addTask(task: Task, resource: ResourceService, uiService: UiService) {
-    resource.addTask(task).subscribe(() => resource.getManager().subscribe((manager) => (this.changeManager(manager))));
+  public addTask(task: Task, manager: Manager, resource: ResourceService, uiService: UiService) { 
+    resource.addTask(task).subscribe(() => resource.getManager(manager).subscribe((manager) => (this.changeManager(manager))));
   }
 
-  public addManager(manager: Manager, companyId: number, resource: ResourceService) {
-    resource.addManager(manager, companyId).subscribe(
-      () => resource.getCompany().subscribe((company) => (this.changeCompany(company)))
+  public addManager(manager: Manager, company: Company, resource: ResourceService) {
+    resource.addManager(manager).subscribe (
+      () => resource.getCompanyById(company).subscribe((company) => (this.changeCompany(company)))
     );
   }
 
-  public deleteManager(managerId: number, resource: ResourceService) {
+  public deleteManager(managerId: number, company: Company, resource: ResourceService) {
     resource.deleteManager(managerId).subscribe(
-      () => resource.getCompany().subscribe((company) => (this.changeCompany(company)))
+      () => resource.getCompanyById(company).subscribe((company) => (this.changeCompany(company)))
     );
   }
   
-  public beginLogin(email: string, password: string, resource: ResourceService) {
-    return resource.loginManager(email, password);
+  public beginManagerLogin(email: string, password: string, resource: ResourceService, token: Token) {
+    return resource.loginManager(email, password, token);
   }
 
-  public beginCompanyLogin(email: string, password: string, resource: ResourceService) {
-    return resource.loginCompany(email, password);
+  public beginCompanyLogin(email: string, password: string, resource: ResourceService, token: Token) {
+    // console.log(email); console.log(password);
+    return resource.loginCompany(email, password, token);
+  }
+
+  public generateCompanyToken(company: Company, resource: ResourceService): Observable<Token> {
+    return resource.generateCompanyToken(company);
+  }
+
+  public getCompanyToken(company: Company, resource: ResourceService): Observable<Token> {
+    return resource.authenticateCompanyLogin(company);
+  }
+
+  public getManagerToken(manager: Manager, resource: ResourceService): Observable<Token> {
+    return resource.authenticateManagerLogin(manager);
   }
 
 }

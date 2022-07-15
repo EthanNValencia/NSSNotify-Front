@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
-import { Company } from '../../employee';
+import { Company, Token } from '../../json-objects';
 
 @Component({
   selector: 'app-signup-page',
@@ -20,11 +20,13 @@ export class SignupPageComponent implements OnInit {
   numberOfManagers!: number;
 
   company!: Company;
+  token!: Token;
 
   constructor(private data: DataService, private resource: ResourceService, private auth: AuthService, private route: Router) { }
 
   ngOnInit(): void {
     this.data.currentCompany.subscribe(company => this.company = company);
+    this.data.currentToken.subscribe(token => this.token = token);
   }
 
   onSubmit() {
@@ -47,9 +49,8 @@ export class SignupPageComponent implements OnInit {
     if(!this.numberOfManagers) {
       alert('You must select a maximum number of managers for your account.');
       return;
-    }
-    const company: Company = {
-      id: null,
+    }let newCompany: Company = {
+      companyId: null,
       companyName: this.companyName,
       companyPassword: this.passwordOne,
       maxManagers: this.numberOfManagers,
@@ -58,14 +59,21 @@ export class SignupPageComponent implements OnInit {
       managers: [],
       companyLastLogin: null
     }
-    this.data.addCompany(company, this.resource).subscribe(() =>
-      this.resource.getCompany().subscribe({
-        next: (company) => (this.data.changeCompany(company)),
+    console.log(JSON.stringify(newCompany));
+
+    this.data.generateCompanyToken(newCompany, this.resource).subscribe({
+      next: (token) => this.data.changeToken(token),
+      error: () => this.failedLogin(),
+      complete: () => this.data.addCompany(newCompany, this.resource, this.token).subscribe({
+        next: (company) => console.log("Returned Company: " + company),
         error: () => this.failedLogin(),
-        complete: () => this.successfulLogin()
+        complete: () => this.data.beginCompanyLogin(newCompany.companyEmail!, newCompany.companyPassword!, this.resource, this.token).subscribe({
+          next: (company) => (this.data.changeCompany(company)),
+          error: () => this.failedLogin(),
+          complete: () => this.successfulLogin()
+        })
       })
-    );
-     
+    });
   }
 
   private failedLogin() {
@@ -80,3 +88,26 @@ export class SignupPageComponent implements OnInit {
   }
 
 }
+
+
+
+    /*
+    this.data.createCompanyToken(newCompany, this.resource).subscribe(
+      (token) => this.data.addCompany(newCompany, this.resource, token).subscribe((company) =>
+        this.data.beginCompanyLogin(company.companyEmail!, company.companyPassword!, this.resource).subscribe({
+          next: (company) => (this.data.changeCompany(company)),
+          error: () => this.failedLogin(),
+          complete: () => this.successfulLogin()
+        })
+      )
+    ); */
+    /*
+    this.data.createCompanyToken(newCompany, this.resource).subscribe({
+      next: (token) => this.data.addCompany(newCompany, this.resource, token).subscribe({
+        next: (company) => this.data.beginCompanyLogin(company.companyEmail!, company.companyPassword!, this.resource).subscribe({
+          next: (company) => (this.data.changeCompany(company)),
+          error: () => this.failedLogin(),
+          complete: () => this.successfulLogin()
+        })
+      })
+    }); */

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Manager } from '../employee';
-import { Task } from '../task';
+import { Manager, Task } from '../json-objects';
 
 @Injectable({
   providedIn: 'root'
@@ -130,7 +129,7 @@ export class UiService {
   }
 
   leftSlimUICheckManager(manager: Manager) {
-    this.leftSlimUI = (manager.employees!.length >= 5);
+    this.leftSlimUI = (manager.recipients!.length >= 5);
     this.leftSlimUISubject.next(this.leftSlimUI);
   }
 

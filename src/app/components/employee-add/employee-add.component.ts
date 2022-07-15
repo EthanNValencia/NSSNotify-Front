@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Employee, Manager } from 'src/app/employee';
+import { Manager, Recipient } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 import { UiService } from 'src/app/services/ui.service';
@@ -14,75 +14,68 @@ import { UiService } from 'src/app/services/ui.service';
 export class EmployeeAddComponent implements OnInit {
   
   manager!: Manager; 
-  employeeFirstName!: string;
-  employeeLastName!: string;
-  employeePhone!: string;
-  employeeEmail!: string;
-  showAddEmployee: boolean | undefined = true;
+  recipientFirstName!: string;
+  recipientLastName!: string;
+  recipientPhone!: string;
+  recipientEmail!: string;
+  showAddRecipient: boolean | undefined = true;
   subscription: Subscription | undefined;
   
   constructor(private uiService: UiService, private data: DataService, private resourceService: ResourceService, private route: Router) { }
 
   ngOnInit(): void {
-    this.subscription = this.uiService.onLeftTopSubjectToggle().subscribe(value => this.showAddEmployee = value);
+    this.subscription = this.uiService.onLeftTopSubjectToggle().subscribe(value => this.showAddRecipient = value);
     this.data.currentManager.subscribe(manager => this.manager = manager);
   }
 
   clearForm() {
-    this.employeeFirstName = '';
-    this.employeeLastName = '';
-    this.employeePhone = '';
-    this.employeeEmail = '';
+    this.recipientFirstName = '';
+    this.recipientLastName = '';
+    this.recipientPhone = '';
+    this.recipientEmail = '';
   }
 
   onSubmit() {
-    if(this.manager.employees?.length == this.manager.maxEmployees) {
+    if(this.manager.recipients?.length == this.manager.maxRecipients) {
       alert('You have reached the maximum number of recipients.');
       return; 
     }
-    if(!this.employeeFirstName) {
+    if(!this.recipientFirstName) {
       alert('Please enter the first name!');
       return;
     }
-    if(!this.employeeLastName) {
+    if(!this.recipientLastName) {
       alert('Please enter the last name!');
       return;
     }
-    if(!this.employeePhone) {
+    if(!this.recipientPhone) {
       alert('Please enter a phone number!');
       return;
     }
-    if(!this.employeeEmail) {
+    if(!this.recipientEmail) {
       alert('Please enter an email address!');
       return;
     }
-    if(!this.data.checkPhoneNumber(this.employeePhone)) {
+    if(!this.data.checkPhoneNumber(this.recipientPhone)) {
       alert('Phone numbers should be in the following format: + the 1-digit country code, a 3-digit area code and a 7-digit telephone number.\nExample of a valid phone number: +14073003000')
       return;
     }
-    const manager: Manager = {
-      id: null,
-      managerEmail: '',
-      managerSelected: false,
-      managerLastLogin: null,
-      managerPhone: '',
-      managerPassword: '',
-      maxEmployees: 0,
-      employees: []
+    var manager: Manager = {
+      managerId: this.manager.managerId
     }
-    const newEmployee: Employee = {
-      id: null,
-      employeeSelected: false,
-      employeeFirstName: this.employeeFirstName,
-      employeeLastName: this.employeeLastName,
-      employeeLastMessage: null,
-      employeePhone: this.employeePhone,
-      employeeEmail: this.employeeEmail,
-      employeeHasDailyTask: false,
-      tasks: null,
+    const recipient: Recipient = {
+      recipientId: null,
+      recipientSelected: false,
+      recipientFirstName: this.recipientFirstName,
+      recipientLastName: this.recipientLastName,
+      recipientLastMessage: null,
+      recipientPhone: this.recipientPhone,
+      recipientEmail: this.recipientEmail,
+      recipientHasDailyTask: false,
+      tasks: [],
       manager: manager
     }
-    this.data.addEmployee(newEmployee, this.resourceService);
+    this.data.addRecipient(recipient, this.manager, this.resourceService);
     // this.resourceService.addEmployee(newEmployee).subscribe(() => (this.manager.employees?.push(newEmployee)));
     this.uiService.clearUI();
     this.route.navigate(['/home/']);

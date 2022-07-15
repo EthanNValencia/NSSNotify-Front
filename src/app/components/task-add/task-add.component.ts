@@ -1,11 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Manager } from 'src/app/employee';
+import { Manager, Task, Recipient } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 import { UiService } from 'src/app/services/ui.service';
-import {Frequency, Task} from '../../task';
 
 @Component({
   selector: 'app-task-add',
@@ -23,7 +22,7 @@ export class TaskAddComponent implements OnInit {
   taskDate!: string | null;
   hasAddress: boolean = false;
   hasAppointment: boolean = false;
-  selectedEmployeeId!: number;
+  selectedRecipientId!: number;
   taskStreet!: string | null;
   taskCity!: string | null;
   taskState!: string | null;
@@ -59,9 +58,9 @@ export class TaskAddComponent implements OnInit {
       greeting = "Good morning, "
     }
     var name = "";
-    for (var i = 0; i < this.manager.employees!.length; i++) {
-      if(this.manager.employees![i].id?.valueOf() == this.selectedEmployeeId) {
-        name = this.manager.employees![i].employeeFirstName + " " + this.manager.employees![i].employeeLastName + ".\n";
+    for (var i = 0; i < this.manager.recipients!.length; i++) {
+      if(this.manager.recipients![i].recipientId?.valueOf() == this.selectedRecipientId) {
+        name = this.manager.recipients![i].recipientFirstName + " " + this.manager.recipients![i].recipientFirstName + ".\n";
       }
     }
     var body = "In regards to "+ this.taskName +", please " + this.taskDescription + ".";
@@ -151,34 +150,19 @@ export class TaskAddComponent implements OnInit {
       taskState: this.taskState,
       taskZipCode: this.taskZipCode,
       taskMessage: this.generatedMessage,
-      taskDate: {
-        id: undefined,
-        date: this.taskDate
+      notifyDate: this.taskDate,
+      notifyFrequency: "ONCE",
+      taskSent: false,
+      recipient: {
+        recipientId: this.selectedRecipientId
       },
-      frequency: {
-        id: 10,
-        frequency: null
-      },
-      employee: {
-        id: this.selectedEmployeeId
-      }
     }
-    
     if(!this.data.checkNotificationTime(newTask)) { // THIS METHOD NEEDS WORK IT DOESNT CALCULATE TIME RIGHT
       alert('Please select a notification time that is after ' + this.data.getMinTime());
       return;
     } 
     // console.log(JSON.stringify(newTask));
-    this.data.addTask(newTask, this.resourceService, this.uiService);
-
-
-    /*
-      () => this.resource.getCompany().subscribe({
-        next: (company) => (this.data.changeCompany(company)),
-        error: () => this.failedLogin(),
-        complete: () => this.successfulLogin()
-      })
-    */
+    this.data.addTask(newTask, this.manager, this.resourceService, this.uiService);
 
     this.resetAddTaskForm();
     this.uiService.clearUI();

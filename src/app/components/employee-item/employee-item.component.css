@@ -1,4 +1,4 @@
-.employee {
+.recipient {
   transition: all 0.75s ease;
   background: grey;
   border: 1px solid ghostwhite;
@@ -9,7 +9,7 @@
   color: black;
 }
 
-.employee.selected {
+.recipient.selected {
   transition: all 0.75s ease;
   background-color: rgb(35, 32, 32);
   border: 1px solid rgb(81, 78, 78);
@@ -17,7 +17,7 @@
   border-right: 5px solid green;
 }
 
-.employee h3 {
+.recipient h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;

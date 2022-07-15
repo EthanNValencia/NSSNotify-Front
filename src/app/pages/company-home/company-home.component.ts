@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Company } from 'src/app/employee';
+import { Company } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 
@@ -16,10 +16,6 @@ export class CompanyHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.currentCompany.subscribe(company => this.company = company);
-    // this.data.beginCompanyLogin("email1", "password", this.resource);
-    this.resource.getCompany().subscribe({
-      next: (company) => (this.data.changeCompany(company))
-    });
   }
 
 }

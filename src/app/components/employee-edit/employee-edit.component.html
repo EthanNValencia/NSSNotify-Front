@@ -1,23 +1,23 @@
-<form *ngIf="showEditEmployee" class="add-form" (ngSubmit)="onSubmit()">
-    <h1>Edit Employee</h1>
+<form *ngIf="showEditRecipient" class="add-form" (ngSubmit)="onSubmit()">
+    <h1>Edit Recipient</h1>
     <div class="flex-box">
         <div class="form-control flex-child">
-            <label for="text">Employee First Name: </label>
-            <input type="text" name="employeeFirstName" id="employeeFirstName" [(ngModel)]="employeeEdit.employeeFirstName" value="{{employeeEdit.employeeFirstName}}"/>
+            <label for="text">Recipient First Name: </label>
+            <input type="text" name="recipientFirstName" id="recipientFirstName" [(ngModel)]="recipientEdit.recipientFirstName" value="{{recipientEdit.recipientFirstName}}"/>
         </div>
         <div class="form-control flex-child">
-            <label for="text">Employee Last Name: </label>
-            <input type="text" name="employeeLastName" id="employeeLastName" [(ngModel)]="employeeEdit.employeeLastName" value="{{employeeEdit.employeeLastName}}"/>
+            <label for="text">Recipient Last Name: </label>
+            <input type="text" name="recipientLastName" id="recipientLastName" [(ngModel)]="recipientEdit.recipientLastName" value="{{recipientEdit.recipientLastName}}"/>
         </div>
     </div>
     <div class="flex-box">
         <div class="form-control flex-child">
-            <label for="text">Employee Phone Number: </label>
-            <input type="text" name="employeePhone" id="employeePhone" [(ngModel)]="employeeEdit.employeePhone" value="{{employeeEdit.employeePhone}}"/>
+            <label for="text">Recipient Phone Number: </label>
+            <input type="text" name="recipientPhone" id="recipientPhone" [(ngModel)]="recipientEdit.recipientPhone" value="{{recipientEdit.recipientPhone}}"/>
         </div>
         <div class="form-control flex-child">
-            <label for="text">Employee Email: </label>
-            <input type="text" name="employeeEmail" id="employeeEmail" [(ngModel)]="employeeEdit.employeeEmail" value="{{employeeEdit.employeeEmail}}"/>
+            <label for="text">Recipient Email: </label>
+            <input type="text" name="recipientEmail" id="recipientEmail" [(ngModel)]="recipientEdit.recipientEmail" value="{{recipientEdit.recipientEmail}}"/>
         </div>
     </div>
     <div class="more-padding">

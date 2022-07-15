@@ -1,22 +1,22 @@
-<form *ngIf="showAddEmployee" class="add-form" (ngSubmit)="onSubmit()">
-    <h1>Add Employee</h1>
+<form *ngIf="showAddRecipient" class="add-form" (ngSubmit)="onSubmit()">
+    <h1>Add Recipient</h1>
     <div class="form-control">
-        <label for="text">Employee First Name: </label>
-        <input type="text" name="employeeFirstName" id="employeeFirstName" [(ngModel)]="employeeFirstName" placeholder="Add Employee First Name"/>
+        <label for="text">Recipient First Name: </label>
+        <input type="text" name="recipientFirstName" id="recipientFirstName" [(ngModel)]="recipientFirstName" placeholder="Add Recipient First Name"/>
     </div>
     <div class="form-control">
-        <label for="text">Employee Last Name: </label>
-        <input type="text" name="employeeLastName" id="employeeLastName" [(ngModel)]="employeeLastName" placeholder="Add Employee Last Name"/>
+        <label for="text">Recipient Last Name: </label>
+        <input type="text" name="recipientLastName" id="recipientLastName" [(ngModel)]="recipientLastName" placeholder="Add Recipient Last Name"/>
     </div>
     <div class="form-control">
-        <label for="text">Employee Phone Number: </label>
-        <input type="text" name="employeePhone" id="employeePhone" [(ngModel)]="employeePhone" placeholder="Add Employee Phone Number"/>
+        <label for="text">Recipient Phone Number: </label>
+        <input type="text" name="recipientPhone" id="recipientPhone" [(ngModel)]="recipientPhone" placeholder="Add Recipient Phone Number"/>
     </div>
     <div class="form-control">
-        <label for="text">Employee Email: </label>
-        <input type="text" name="employeeEmail" id="employeeEmail" [(ngModel)]="employeeEmail" placeholder="Add Employee Email"/>
+        <label for="text">Recipient Email: </label>
+        <input type="text" name="recipientEmail" id="recipientEmail" [(ngModel)]="recipientEmail" placeholder="Add Recipient Email"/>
     </div>
     <div class="more-padding">
-        <input type="submit" style="background-color:maroon" value="Save Employee" class="btn btn-block"/>
+        <input type="submit" style="background-color:maroon" value="Save Recipient" class="btn btn-block"/>
     </div>
 </form>

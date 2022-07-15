@@ -12,7 +12,7 @@
         </fa-icon></h3>
     </ng-container>
     <ng-container *ngIf="slimUI">
-        <h4 class="not-selectable">{{task.taskName}} {{task.taskNotifyTime}} {{task.taskDate.date}}
+        <h4 class="not-selectable">{{task.taskName}} {{task.taskNotifyTime}} {{task.notifyDate}}
             <fa-icon 
             (click)="deleteTask(task)"
             [ngStyle]="{'color': 'red'}" 
@@ -24,8 +24,8 @@
     <ng-container *ngIf="task.taskNotifyTime !== ''">
         <p class="not-selectable"><b class="title">Notification Time: </b>{{task.taskNotifyTime}}</p>
     </ng-container>
-    <ng-container *ngIf="task.taskDate.date !== ''">
-        <p class="not-selectable"><b class="title">Notification Date: </b>{{task.taskDate.date}}</p>
+    <ng-container *ngIf="task.notifyDate !== ''">
+        <p class="not-selectable"><b class="title">Notification Date: </b>{{task.notifyDate}}</p>
     </ng-container>
         <ng-container *ngIf="task.taskMessage !== ''">
             <p class="not-selectable"><b class="title">Message: </b>{{task.taskMessage}}</p>
@@ -39,9 +39,4 @@
             ></app-button>
         </ng-container>
     </ng-container>
-
 </div>
-
-<!-- 
-    <ng-container *ngIf="task.taskStreet !== null || task.taskCity !== null || task.taskState !== null || task.taskZipCode !== null || task.taskStreet !== '' || task.taskCity !== '' || task.taskState !== '' || task.taskZipCode !== ''">
--->

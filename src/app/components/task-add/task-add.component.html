@@ -14,8 +14,8 @@
     -->
     <div class="form-control form-control-check">
         <label for="selectedEmployee">Select Employee:</label>
-        <select id="selectedEmployee" name="selectedEmployee" [(ngModel)]="selectedEmployeeId">
-            <option *ngFor="let employee of manager.employees" value={{employee.id}}>{{employee.employeeFirstName}} {{employee.employeeLastName}}</option>
+        <select id="selectedEmployee" name="selectedEmployee" [(ngModel)]="selectedRecipientId">
+            <option *ngFor="let recipient of manager.recipients" value={{recipient.recipientId}}>{{recipient.recipientFirstName}} {{recipient.recipientLastName}}</option>
         </select>
     </div>
     <div class="form-control">

@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-import { Company, Manager } from 'src/app/employee';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { DataService } from 'src/app/services/data.service';
 import { Subscription } from 'rxjs';
 import { UiService } from 'src/app/services/ui.service';
 import { Router } from '@angular/router';
+import { Manager } from 'src/app/json-objects';
 
 @Component({
   selector: 'app-manager-item',

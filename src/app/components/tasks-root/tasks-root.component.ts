@@ -1,10 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription, takeLast } from 'rxjs';
-import { Employee, Manager } from 'src/app/employee';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
 import { UiService } from 'src/app/services/ui.service';
-import {Task} from '../../task';
+import { Manager, Recipient, Task } from 'src/app/json-objects';
 
 @Component({
   selector: 'app-tasks-root',
@@ -15,7 +14,7 @@ export class TasksRootComponent implements OnInit {
 
   slimUI!: boolean;
   subscription: Subscription | undefined;
-  employee!: Employee;
+  recipient!: Recipient;
   manager!: Manager; // This is global data. 
   tasks: Task[] | undefined; // This is the tasks of the selected employee
 
@@ -29,13 +28,13 @@ export class TasksRootComponent implements OnInit {
   }
 
   deleteTask(task: Task) {
-    for(var i = 0; i < this.manager.employees!.length; i++) {
-      for(var j = 0; j < this.manager.employees![i].tasks!.length; j++) {
-        if(this.manager.employees![i].tasks![j].id === task.id) {
-          this.manager.employees![i].tasks!.splice(j, 1);
+    for(var i = 0; i < this.manager.recipients!.length; i++) {
+      for(var j = 0; j < this.manager.recipients![i].tasks!.length; j++) {
+        if(this.manager.recipients![i].tasks![j].taskId === task.taskId) {
+          this.manager.recipients![i].tasks!.splice(j, 1);
         }
-        if(this.manager.employees![i].tasks!.length === 0) {
-          this.manager.employees![i].employeeHasDailyTask = false;
+        if(this.manager.recipients![i].tasks!.length === 0) {
+          this.manager.recipients![i].recipientHasDailyTask = false;
         }
       }
     }
@@ -43,12 +42,12 @@ export class TasksRootComponent implements OnInit {
   }
 
   toggleTask(task: Task) {
-    for(var i = 0; i < this.manager.employees!.length; i++) {
-      for(var j = 0; j < this.manager.employees![i].tasks!.length; j++) {
-        if(this.manager.employees![i].tasks![j].id == task.id) {
-          this.manager.employees![i].tasks![j].taskSelected = !this.manager.employees![i].tasks![j].taskSelected;
+    for(var i = 0; i < this.manager.recipients!.length; i++) {
+      for(var j = 0; j < this.manager.recipients![i].tasks!.length; j++) {
+        if(this.manager.recipients![i].tasks![j].taskId == task.taskId) {
+          this.manager.recipients![i].tasks![j].taskSelected = !this.manager.recipients![i].tasks![j].taskSelected;
         } else {
-          this.manager.employees![i].tasks![j].taskSelected = false;
+          this.manager.recipients![i].tasks![j].taskSelected = false;
         }
       }
     }

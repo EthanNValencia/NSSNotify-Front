@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Manager } from 'src/app/employee';
+import { Manager } from 'src/app/json-objects';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {Task} from '../../task';
+import { Task } from 'src/app/json-objects';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { DataService } from 'src/app/services/data.service';
 import { UiService } from 'src/app/services/ui.service';
@@ -29,7 +29,6 @@ export class TaskItemComponent implements OnInit {
     this.subscription = this.uiService.onRightEditSubjectToggle().subscribe(value => this.showEditTask = value);
     this.subscription.add(this.uiService.onRightSlimUICheckToggle().subscribe(value => this.slimUI = value));
     this.uiService.rightSlimUICheckTasks(this.tasks!);
-
   }
 
   deleteTask(task: Task) {

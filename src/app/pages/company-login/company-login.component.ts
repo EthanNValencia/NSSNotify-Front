@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Company } from 'src/app/employee';
+import { Company, Token } from 'src/app/json-objects';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { ResourceService } from 'src/app/services/resource.service';
@@ -13,11 +13,13 @@ import { ResourceService } from 'src/app/services/resource.service';
 export class CompanyLoginComponent implements OnInit {
 
   company!: Company;
+  token!: Token;
 
   constructor(private data: DataService, private resource: ResourceService, private auth: AuthService, private route: Router) { }
 
   ngOnInit(): void {
     this.data.currentCompany.subscribe(company => this.company = company);
+    this.data.currentToken.subscribe(token => this.token = token);
   }
 
   onSubmit() {
@@ -28,12 +30,18 @@ export class CompanyLoginComponent implements OnInit {
     if(!this.company.companyPassword) {
       alert('Please enter your password!');
       return;
-    } 
-    this.data.beginCompanyLogin(this.company.companyEmail, this.company.companyPassword, this.resource).subscribe({
-      next: (company) => (this.data.changeCompany(company)),
+    }
+    console.log("Company: " + JSON.stringify(this.company));
+    this.data.getCompanyToken(this.company, this.resource).subscribe({
+      next: (token) => this.data.changeToken(token),
       error: () => this.failedLogin(),
-      complete: () => this.verifyLogin()
+      complete: () => this.data.beginCompanyLogin(this.company.companyEmail!, this.company.companyPassword!, this.resource, this.token).subscribe({
+        next: (company) => (this.data.changeCompany(company)),
+        error: () => this.failedLogin(),
+        complete: () => this.verifyLogin()
+      })
     });
+    
   }
 
   private failedLogin() {
@@ -50,7 +58,7 @@ export class CompanyLoginComponent implements OnInit {
   }
 
   private verifyLogin() {
-    if(this.company.id != null) {
+    if(this.company.companyId != null) {
       this.successfulLogin();
     } else {
       this.failedLogin();
