@@ -1,20 +1,20 @@
 <form *ngIf="showAddRecipient" class="add-form" (ngSubmit)="onSubmit()">
     <h1>Add Recipient</h1>
     <div class="form-control">
-        <label for="text">Recipient First Name: </label>
-        <input type="text" name="recipientFirstName" id="recipientFirstName" [(ngModel)]="recipientFirstName" placeholder="Add Recipient First Name"/>
+        <label for="text">First Name: </label>
+        <input type="text" name="recipientFirstName" id="recipientFirstName" [(ngModel)]="recipientFirstName" placeholder="First Name"/>
     </div>
     <div class="form-control">
-        <label for="text">Recipient Last Name: </label>
-        <input type="text" name="recipientLastName" id="recipientLastName" [(ngModel)]="recipientLastName" placeholder="Add Recipient Last Name"/>
+        <label for="text">Last Name: </label>
+        <input type="text" name="recipientLastName" id="recipientLastName" [(ngModel)]="recipientLastName" placeholder="Last Name"/>
     </div>
     <div class="form-control">
-        <label for="text">Recipient Phone Number: </label>
-        <input type="text" name="recipientPhone" id="recipientPhone" [(ngModel)]="recipientPhone" placeholder="Add Recipient Phone Number"/>
+        <label for="text">Phone Number: </label>
+        <input type="text" name="recipientPhone" id="recipientPhone" [(ngModel)]="recipientPhone" placeholder="Phone Number"/>
     </div>
     <div class="form-control">
-        <label for="text">Recipient Email: </label>
-        <input type="text" name="recipientEmail" id="recipientEmail" [(ngModel)]="recipientEmail" placeholder="Add Recipient Email"/>
+        <label for="text">Email: </label>
+        <input type="text" name="recipientEmail" id="recipientEmail" [(ngModel)]="recipientEmail" placeholder="Email"/>
     </div>
     <div class="more-padding">
         <input type="submit" style="background-color:maroon" value="Save Recipient" class="btn btn-block"/>

@@ -1,11 +1,27 @@
-.flex-box {
-    display: flex;
+@media only screen and (min-width: 816px) {
+    .flex-box {
+        display: flex;
+    }
+    
+    .flex-child {
+        flex: 0.75;
+    }  
+    
+    .flex-child:first-child {
+        margin-right: 20px;
+    }
 }
 
-.flex-child {
-    flex: 0.75;
-}  
-
-.flex-child:first-child {
-    margin-right: 20px;
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    .flex-box {
+        display: table;
+    }
+    
+    p {
+        font-size: xx-small;
+    }
+    
+    h1 {
+        font-size: medium;
+    }
 }

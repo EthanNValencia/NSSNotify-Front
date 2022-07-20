@@ -2,7 +2,11 @@
 ng serve --disableHostCheck=true --port 4402 --ssl true --ssl-key {KEY-PATH} --ssl-cert {CERT-PATH}
 ng serve --disableHostCheck=true --port 4402
 
-ng serve -o --ssl true --ssl-key ssl/keypair.key --ssl-cert ssl/nsscert.crt --disableHostCheck=true --port 4402
+ng build --prod --base-href "nssnotify.com"
+
+ng build --prod
+
+ng serve -o --ssl true --ssl-key ssl/private_key_pem.key --ssl-cert ssl/certificate_pem.pem --disableHostCheck=true --port 4402 --host "nssnotify.com"
 
 ng serve -o --ssl true --disableHostCheck=true --port 4402
 

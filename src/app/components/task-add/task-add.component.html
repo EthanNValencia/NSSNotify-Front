@@ -4,16 +4,8 @@
         <label for="text">Name: </label>
         <input type="text" name="taskName" id="taskName" [(ngModel)]="taskName" placeholder="Add Task Name">
     </div>
-    <!--
-    <div class="form-control form-control-check">
-        <label for="selectedFrequency">Select Notify Frequency:</label>
-        <select id="selectedFrequency" name="selectedFrequency" [(ngModel)]="selectedFrequency">
-            <option *ngFor="let frequency of frequencies" value={{frequency.id}}>{{frequency.frequency}}</option>
-        </select>
-    </div>
-    -->
-    <div class="form-control form-control-check">
-        <label for="selectedEmployee">Select Employee:</label>
+    <div class="form-control"> <!-- form-control-check -->
+        <label for="selectedEmployee">Recipient:</label>
         <select id="selectedEmployee" name="selectedEmployee" [(ngModel)]="selectedRecipientId">
             <option *ngFor="let recipient of manager.recipients" value={{recipient.recipientId}}>{{recipient.recipientFirstName}} {{recipient.recipientLastName}}</option>
         </select>
@@ -37,12 +29,12 @@
 
     <!-- Check boxes for whether there is an address and/or a scheduled time -->
     <div class="flex-box">
-        <div class="form-control form-control-check flex-child">
-            <label for="text">Has Address</label>
+        <div class="form-control check flex-child">
+            <label for="text">Address: </label>
             <input type="checkbox" name="hasAddress" id="hasAddress" [(ngModel)]="hasAddress" placeholder=""/>
         </div>
-        <div class="form-control form-control-check flex-child">
-            <label for="text">Has Schedule</label>
+        <div class="form-control check flex-child">
+            <label for="text">Timeframe: </label>
             <input type="checkbox" name="hasAppointment" id="hasAppointment" [(ngModel)]="hasAppointment" placeholder=""/>
         </div>
     </div>

@@ -8,3 +8,15 @@ div {
     min-width: 150px;
     max-width: 330px;
 }
+
+img {
+    max-width: 100%;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    div {
+        border: 1px solid darkgray;
+        text-align: center;
+        min-width: 125px;
+    }
+}

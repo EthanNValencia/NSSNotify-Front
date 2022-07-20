@@ -2,9 +2,8 @@
     [ngClass]="{selected: task.taskSelected}" 
     class="task" 
     (dblclick)="onToggle(task)">
-
     <ng-container *ngIf="!slimUI">
-        <h3 class="not-selectable">Name: {{task.taskName}}
+        <h3 class="not-selectable">{{task.taskName}}
             <fa-icon 
             (click)="deleteTask(task)"
             [ngStyle]="{'color': 'red'}" 

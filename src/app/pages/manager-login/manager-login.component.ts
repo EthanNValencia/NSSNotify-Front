@@ -35,8 +35,7 @@ export class ManagerLoginComponent implements OnInit {
     }
     this.manager.managerEmail = this.email;
     this.manager.managerPassword = this.password;
-    console.log("Attempting to login: " + JSON.stringify(this.manager));
-
+    // console.log("Attempting to login: " + JSON.stringify(this.manager));
     this.data.getManagerToken(this.manager, this.resource).subscribe({
       next: (token) => this.data.changeToken(token),
       error: () => this.failedLogin(),

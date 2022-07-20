@@ -7,8 +7,11 @@ import { AuthRequest, Company, Manager, Recipient, Task, Token } from '../json-o
   providedIn: 'root'
 })
 export class ResourceService {
-  
-  private API_BASE_URL = 'http://192.168.0.6:8080/nss/';
+ 
+  // private API_BASE_URL = 'https://192.168.0.6:8443/nss/';
+  // private API_BASE_URL = 'https://157.245.92.8:8085/nss/';
+  private API_BASE_URL = 'https://nssnotify.org/nss/'; // PRODUCTION
+  private API_BASE_URL = 'http://192.168.0.6:8080/nss/'; // DEVELOPMENT
   private API_DELETE_TASK = this.API_BASE_URL + 'delete/task/'; // By ID
   private API_DELETE_RECIPIENT = this.API_BASE_URL + 'delete/recipient/'; // By ID
   private API_CREATE_MANAGER = this.API_BASE_URL + "post/create-manager";
@@ -31,7 +34,6 @@ export class ResourceService {
 
   private API_AUTH = this.API_BASE_URL + "auth/login";
   //  this.data.currentToken.subscribe(token => this.token = token);
-
 
   private HEADERS_ONLY_TOKEN = { }
 
@@ -109,7 +111,7 @@ export class ResourceService {
   }
 
   authenticateManagerLogin(manager: Manager): Observable<Token> {
-    console.log("HERE " + JSON.stringify(manager));
+    // console.log("HERE " + JSON.stringify(manager));
     var auth: AuthRequest = {
       email: manager.managerEmail!,
       password: manager.managerPassword!
@@ -118,7 +120,7 @@ export class ResourceService {
   }
 
   generateCompanyToken(company: Company): Observable<Token> {
-    console.log(JSON.stringify(company));
+    // console.log(JSON.stringify(company));
     return this.http.post<Token>(this.API_GENERATE_COMPANY_TOKEN, company, this.HEADERS_CONTENT);
   }
 
@@ -127,7 +129,7 @@ export class ResourceService {
   }
 
   generateManagerToken(manager: Manager): Observable<Token> {
-    console.log(JSON.stringify(manager));
+    // console.log(JSON.stringify(manager));
     return this.http.post<Token>(this.API_GENERATE_MANAGER_TOKEN, manager, this.HEADERS_CONTENT);
   }
 

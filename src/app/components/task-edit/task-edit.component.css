@@ -24,9 +24,15 @@
 
 .text-area {
     height: 75px;
-    width: 325px;
+    width: 100%;
 }
 
 .edit-task-form {
     max-width: 325px;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    .flex-box {
+        display: table;
+    }
 }

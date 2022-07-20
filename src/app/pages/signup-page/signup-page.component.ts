@@ -19,6 +19,8 @@ export class SignupPageComponent implements OnInit {
   passwordTwo!: string;
   numberOfManagers!: number;
 
+  disabled: boolean = true;
+
   company!: Company;
   token!: Token;
 
@@ -49,7 +51,8 @@ export class SignupPageComponent implements OnInit {
     if(!this.numberOfManagers) {
       alert('You must select a maximum number of managers for your account.');
       return;
-    }let newCompany: Company = {
+    }
+    let newCompany: Company = {
       companyId: null,
       companyName: this.companyName,
       companyPassword: this.passwordOne,
@@ -59,8 +62,11 @@ export class SignupPageComponent implements OnInit {
       managers: [],
       companyLastLogin: null
     }
-    console.log(JSON.stringify(newCompany));
-
+    // console.log(JSON.stringify(newCompany));
+    if(this.disabled) {
+      alert('This feature has been temporarily disabled.')
+      return;
+    }
     this.data.generateCompanyToken(newCompany, this.resource).subscribe({
       next: (token) => this.data.changeToken(token),
       error: () => this.failedLogin(),

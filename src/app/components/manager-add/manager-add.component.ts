@@ -60,7 +60,7 @@ export class ManagerAddComponent implements OnInit {
       alert('Phone numbers should be in the following format: + the 1-digit country code, a 3-digit area code and a 7-digit telephone number.\nExample of a valid phone number: +14073003000')
       return;
     }
-    if(!this.company.companyEmail == !this.managerEmail) {
+    if(this.company.companyEmail == this.managerEmail) {
       alert('You cannot use your company email address for a manager.')
       return;
     }

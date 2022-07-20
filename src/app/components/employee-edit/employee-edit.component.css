@@ -8,4 +8,14 @@
 
 .flex-child:first-child {
     margin-right: 20px;
-} 
+}
+
+
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    .flex-box {
+        display: table;
+    }
+    .flex-child:first-child {
+        margin-right: 0px;
+    }
+}

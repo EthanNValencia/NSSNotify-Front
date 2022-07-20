@@ -87,12 +87,10 @@ export class TaskAddComponent implements OnInit {
       alert('Please enter a task notification time!');
       return false;
     }
-
     if(this.generatedMessage.length >= 150) {
       alert('Your message length exceeds the 150 character limit. Please decrease the size of your message.');
       return false;
     }
-
     if(this.hasAppointment) { // If schedule box is checked this will be true. 
       if(!this.taskStartTime) {
         alert('Please enter a task begin time!');
@@ -157,11 +155,10 @@ export class TaskAddComponent implements OnInit {
         recipientId: this.selectedRecipientId
       },
     }
-    if(!this.data.checkNotificationTime(newTask)) { // THIS METHOD NEEDS WORK IT DOESNT CALCULATE TIME RIGHT
-      alert('Please select a notification time that is after ' + this.data.getMinTime());
+    if(!this.data.notificationIsInPast(newTask)) { // THIS METHOD NEEDS WORK IT DOESNT CALCULATE TIME RIGHT
+      alert('Please select a notification time that is after ' + this.data.getMinTime() + ".");
       return;
-    } 
-    // console.log(JSON.stringify(newTask));
+    }
     this.data.addTask(newTask, this.manager, this.resourceService, this.uiService);
 
     this.resetAddTaskForm();

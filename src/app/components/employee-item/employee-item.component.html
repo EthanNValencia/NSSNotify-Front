@@ -2,7 +2,7 @@
     [ngClass]="{selected: recipient.recipientSelected}" 
     class="recipient" 
     (dblclick)="onToggle(recipient)">
-    <h3 class="not-selectable"> <ng-container *ngIf="recipient.recipientSelected || !slimUI">Name: </ng-container>
+    <h3 class="not-selectable"> <!-- <ng-container *ngIf="recipient.recipientSelected || !slimUI">Name: </ng-container> -->
         {{recipient.recipientFirstName}} {{recipient.recipientLastName}} 
         <ng-container *ngIf="recipient.recipientHasDailyTask">
             <span class="dot_green not-selectable"></span> 

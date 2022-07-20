@@ -114,14 +114,14 @@ export class DataService {
   }
 
   experimentTime() {
-    console.log(this.timezone);
+    console.log("TimeZone: " + this.timezone);
     console.log(this.rightNowDateTime.toLocaleString());
     console.log(this.rightNowDateTime.toTimeString());
     console.log(this.minTime);
     console.log(this.minDate);
   }
 
-  checkNotificationTime(task: Task): boolean {
+  notificationIsInPast(task: Task): boolean {
     var notifyHour = parseInt(task.taskNotifyTime!.substring(0, 2), 10);
     var notifyMinute = parseInt(task.taskNotifyTime!.substring(3, 6), 10); // 20:30
     this.minTime = this.setMinTime();
@@ -132,12 +132,14 @@ export class DataService {
     // console.log("The notify time is: " + notifyHour + ":" + notifyMinute);
     // console.log("The this.minHour+this.minMinute is: " + this.minHour + ":" + this.minMinute);
     if(this.minDate == task.notifyDate!) {
-      console.log("True 1");
-      if((notifyHour >= this.minHour!) && (notifyMinute >= this.minMinute!)) {
-        console.log("True 2");
+      console.log("Min Date: " + this.minDate + " Notify Date: " + task.notifyDate)
+      if((notifyHour >= this.minHour!)) {
         return true;
       }
-    }
+      if((notifyHour == this.minHour!) && (notifyMinute >= this.minMinute!)) {
+        return true;
+      }
+    } 
     /*
     console.log("this.minDate == task.notifyDate: " + (this.minDate == task.notifyDate!));
     console.log("this.minDate === task.notifyDate: " + (this.minDate === task.notifyDate!));
@@ -320,7 +322,7 @@ export class DataService {
 
   changeToken(token: Token) {
     if(token != null) {
-      console.log("Change Token: " + token.access_token);
+      // console.log("Change Token: " + token.access_token);
       this.token.next(token);
     }
   }

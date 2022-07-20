@@ -1,0 +1,13 @@
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    .flex-box {
+        display: table;
+    }
+    
+    p {
+        font-size: xx-small;
+    }
+    
+    h1 {
+        font-size: medium;
+    }
+}

@@ -1,28 +1,79 @@
-.form-time {
-    width: 140px;
-}
-
-.form-date {
-    width: 140px;
-}
-
-.text-box {
+.text-area {
+    height: 75px;
     width: 100%;
 }
 
-.flex-box {
-    display: flex;
+@media only screen and (min-width: 816px) {
+    .form-time {
+        width: 140px;
+    }
+
+    .form-date {
+        width: 140px;
+    }
+
+    .text-box {
+        width: 100%;
+    }
+
+    .flex-box {
+        display: flex;
+    }
+
+    .flex-child {
+        flex: 0.75;
+    }  
+
+    .flex-child:first-child {
+        margin-right: 20px;
+    } 
 }
 
-.flex-child {
-    flex: 0.75;
-}  
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    
+    .flex-box {
+        display: table;
+    }
 
-.flex-child:first-child {
-    margin-right: 20px;
+    .flex-child:first-child {
+        margin-right: 0px;
+    }
+
+    .check input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 2;
+    }
+}
+
+/*
+
+@media only screen and (min-width: 0px) and (max-width: 815.9px) {
+    
+    .form-time {
+        width: 100%;
+    }
+
+    .form-date {
+        width: 100%;
+    }
+
+    .flex-box {
+        display: table;
+    }
+
+    .text-box {
+        width: 100%;
+    }
+
+    .flex-child {
+        flex: 0.0;
+    }  
+    
+    .text-area {
+        height: 35px;
+        width: 100%;
+    }
 } 
-
-.text-area {
-    height: 75px;
-    width: 325px;
-}
+*/

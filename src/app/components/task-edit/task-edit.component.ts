@@ -34,7 +34,7 @@ export class TaskEditComponent implements OnInit {
    }
 
   onSubmit() {
-    if(!this.data.checkNotificationTime(this.currentTask)) {
+    if(!this.data.notificationIsInPast(this.currentTask)) {
       alert('Please select a notification time that is after ' + this.data.getMinTime() + ".");
       return;
     }
